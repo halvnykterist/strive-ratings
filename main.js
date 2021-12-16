@@ -214,58 +214,85 @@ function show_player(id) {
         let rank_table = document.getElementById("results_table");
         rank_table.innerHTML = '';
 
-        append_p(div, player.name);
+        let h = document.createElement("h2");
+        div.appendChild(h);
+        h.appendChild(document.createTextNode(player.name));
         let other_names = player.all_names.filter(n => n != player.name);
+
         if(other_names.length > 0) {
             append_p(div, "Other names: " + other_names);
         }
 
-        for(let i = 0; i < player.match_history.length; i++) {
+        for(let i = 0; i < player.character_stats.length; i++) {
+            let stats = player.character_stats[i];
             {
-                let [character, rating, deviation, set_count, win_rate] = player.character_ratings[i];
-                append_div(div, character
-                    + " - "
-                    + rating
-                    + " ±"
-                    + deviation
-                    + " (" + set_count + " sets, "
-                    + Math.round(win_rate * 100)
-                    + "% win rate)"
-                );
+                let h = document.createElement("h4");
+                div.appendChild(h);
+                h.appendChild(document.createTextNode(
+                    stats.character
+                        + " - "
+                        + stats.rating
+                        + " ±"
+                        + stats.deviation
+                        + " (" + stats.set_count + " sets, "
+                        + Math.round(stats.win_rate * 100)
+                        + "% win rate)"
+                ));
             }
-            let [character, history] = player.match_history[i];
-            let table = document.createElement("table");
-            div.appendChild(table);
-            //append_table_header(table, "Character");
-            append_table_header(table, "Date");
-            append_table_header(table, "Rating");
-            append_table_header(table, "Floor");
-            append_table_header(table, "Opponent");
-            append_table_header(table, "Opp. Character");
-            append_table_header(table, "Opp. Rating");
-            append_table_header(table, "Expected outcome");
-            append_table_header(table, "Result");
+            {
+                let history = stats.match_history;
+                let table = document.createElement("table");
+                div.appendChild(table);
+                append_table_header(table, "Date");
+                append_table_header(table, "Rating");
+                append_table_header(table, "Floor");
+                append_table_header(table, "Opponent");
+                append_table_header(table, "Opp. Character");
+                append_table_header(table, "Opp. Rating");
+                append_table_header(table, "Expected outcome");
+                append_table_header(table, "Result");
 
-            for(let j = 0; j < history.length; j++) {
-                let match = history[j];
-                let row = document.createElement("tr");
-                table.appendChild(row);
-                //append_table(row, character);
-                append_table(row, match.timestamp);
-                append_table(row, match.own_rating + " ±" + match.own_deviation);
-                append_table(row, match.floor);
-                let opp_name = append_table(row, match.opponent_name + " ");
-                let link = document.createElement("a");
-                link.appendChild(document.createTextNode("→"));
-                link.href = "#" + match.opponent_id;
-                opp_name.appendChild(link);
-                append_table(row, match.opponent_character);
-                append_table(row, match.opponent_rating + " ±" + match.opponent_deviation);
-                append_table(row, Math.round(match.expected_result * 100) + "%");
-                append_table(row, match.wins + " - " + match.losses);
+                for(let j = 0; j < history.length; j++) {
+                    let match = history[j];
+                    let row = document.createElement("tr");
+                    table.appendChild(row);
+                    //append_table(row, character);
+                    append_table(row, match.timestamp);
+                    append_table(row, match.own_rating + " ±" + match.own_deviation);
+                    append_table(row, match.floor);
+                    let opp_name = append_table(row, match.opponent_name + " ");
+                    let link = document.createElement("a");
+                    link.appendChild(document.createTextNode("→"));
+                    link.href = "#" + match.opponent_id;
+                    opp_name.appendChild(link);
+                    append_table(row, match.opponent_character);
+                    append_table(row, match.opponent_rating + " ±" + match.opponent_deviation);
+                    append_table(row, Math.round(match.expected_result * 100) + "%");
+                    append_table(row, match.wins + " - " + match.losses);
+                }
+
+                div.appendChild(document.createElement("br"));
+            }
+            {
+                let table = document.createElement("table");
+                div.appendChild(table);
+                append_table_header(table, "Matchup");
+                append_table_header(table, "Set Count");
+                append_table_header(table, "Win Rate (Real)");
+                append_table_header(table, "Win Rate (Adjusted)");
+
+                for(let j = 0; j < stats.matchups.length; j++) {
+                    let matchup = stats.matchups[j];
+                    let row = document.createElement("tr");
+                    table.appendChild(row);
+                    append_table(row, matchup.character);
+                    append_table(row, matchup.set_count);
+                    append_table(row, Math.round(matchup.win_rate * 100) + "%");
+                    append_table(row, Math.round(matchup.adjusted_win_rate * 100) + "%");
+                }
             }
 
-            div.appendChild(document.createElement("br"));
+            div.appendChild(document.createElement("hr"));
         }
     }
 }

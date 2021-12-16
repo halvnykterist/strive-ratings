@@ -17,7 +17,7 @@ function main() {
                 + " games between "
                 + data.player_count.toLocaleString("en-US")
                 + " players. Data last retrieved "
-                + data.timestamp + "."
+                + data.timestamp + " UTC."
             ));
             on_hash_change();
 
@@ -34,6 +34,7 @@ function main() {
         });
 }
 
+//I'm pretty sure this is a "single page application"
 function on_hash_change() {
     if(location.hash === "") {
         show_top_100();
@@ -41,6 +42,10 @@ function on_hash_change() {
         show_top_100();
     } else if(location.hash === "#player_search") {
         show_player_search();
+    } else if(location.hash === "#distribution") {
+        show_player_distribution();
+    } else if(location.hash === "#about") {
+        show_about();
     } else {
         let id = location.hash.replace("#", "");
         show_player(id);
@@ -50,6 +55,7 @@ function on_hash_change() {
 function show_top_100() {
     let div = document.getElementById("content");
     div.innerHTML = "";
+    document.getElementById("about").hidden = {};
 
     let table = document.getElementById("results_table");
     table.innerHTML = "";
@@ -85,6 +91,7 @@ let search_string = ""
 function show_player_search() {
     let div = document.getElementById("content");
     div.innerHTML = "";
+    document.getElementById("about").hidden = {};
 
     let table = document.getElementById("results_table");
     table.innerHTML = '';
@@ -143,11 +150,64 @@ function update_search_results() {
     }
 }
 
+function show_player_distribution() {
+    let div = document.getElementById("content");
+    div.innerHTML = "";
+    document.getElementById("about").hidden = {};
+    let results_table = document.getElementById("results_table");
+    results_table.innerHTML = '';
+
+    let floor_table = document.createElement("table");
+    div.appendChild(floor_table);
+    {
+        let row = document.createElement("tr");
+        floor_table.appendChild(row);
+        append_table_header(row, "Floor");
+        append_table_header(row, "Games played");
+    }
+    for(let i = 0; i < data.games_per_floor.length; i++) {
+        let [label, games] = data.games_per_floor[i];
+
+        let row = document.createElement("tr");
+        floor_table.appendChild(row);
+        append_table(row, label);
+        append_table(row, Math.round(games * 1000) / 10 + "%");
+    }
+
+    let ratings_table = document.createElement("table");
+    div.appendChild(ratings_table);
+    {
+        let row = document.createElement("tr");
+        ratings_table.appendChild(row);
+        append_table_header(row, "Rating");
+        append_table_header(row, "Games played");
+    }
+    for(let i = 0; i < data.games_per_rating.length; i++) {
+        let [label, games] = data.games_per_rating[i];
+        if(games < 0.001) {
+            continue;
+        }
+        let row = document.createElement("tr");
+        ratings_table.appendChild(row);
+        append_table(row, label);
+        append_table(row, Math.round(games * 1000) / 10 + "%");
+    }
+}
+
+function show_about() {
+    let div = document.getElementById("content");
+    div.innerHTML = '';
+    let results_table = document.getElementById("results_table");
+    results_table.innerHTML = '';
+    document.getElementById("about").hidden = undefined;
+}
+
 function show_player(id) {
     let player = data.players.find(p => p.id == id);
     if(player) {
         let div = document.getElementById("content");
         div.innerHTML = "";
+        document.getElementById("about").hidden = {};
 
         let rank_table = document.getElementById("results_table");
         rank_table.innerHTML = '';

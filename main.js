@@ -174,6 +174,8 @@ function show_player_distribution() {
         append_table(row, Math.round(games * 1000) / 10 + "%");
     }
 
+    div.appendChild(document.createElement("br"));
+
     let ratings_table = document.createElement("table");
     div.appendChild(ratings_table);
     {
@@ -218,20 +220,19 @@ function show_player(id) {
             append_p(div, "Other names: " + other_names);
         }
 
-        for(let i = 0; i < player.character_ratings.length; i++) {
-            let [character, rating, deviation, set_count, win_rate] = player.character_ratings[i];
-            append_p(div, character
-                + " - "
-                + rating
-                + " ±"
-                + deviation
-                + " (" + set_count + " sets, "
-                + Math.round(win_rate * 100)
-                + "% win rate)"
-            );
-        }
-
         for(let i = 0; i < player.match_history.length; i++) {
+            {
+                let [character, rating, deviation, set_count, win_rate] = player.character_ratings[i];
+                append_div(div, character
+                    + " - "
+                    + rating
+                    + " ±"
+                    + deviation
+                    + " (" + set_count + " sets, "
+                    + Math.round(win_rate * 100)
+                    + "% win rate)"
+                );
+            }
             let [character, history] = player.match_history[i];
             let table = document.createElement("table");
             div.appendChild(table);
@@ -285,3 +286,8 @@ function append_p(node, text) {
     node.appendChild(p);
 }
 
+function append_div(node, text) {
+    let p = document.createElement("div");
+    p.appendChild(document.createTextNode(text));
+    node.appendChild(p);
+}

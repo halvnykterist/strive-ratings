@@ -7,10 +7,12 @@
     </head>
     <body onload="main();" onhashchange="on_hash_change();">
         <script src = "main.js"></script>
-
         <div>
             <a href="#player_search">Player search</a> |
             <a href="#top_100">Top 100</a> 
+        </div>
+        <div>
+            <p id="header"></p>
         </div>
         <br>
 
@@ -18,6 +20,8 @@
         </div>
         <br>
 
-        <table id="some_table"></table>
+        <table id="results_table"></table>
+
+        <p>Data for some games prior to Dec. 16th are missing due to issues with the API.</p>
     </body>
 </html>

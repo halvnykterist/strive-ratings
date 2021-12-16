@@ -11,6 +11,14 @@ function main() {
         })
         .then(d => { 
             data = d;
+            let header = document.getElementById("header");
+            header.appendChild(document.createTextNode("Data from "
+                + data.game_count.toLocaleString("en-US")
+                + " games between "
+                + data.player_count.toLocaleString("en-US")
+                + " players. Data last retrieved "
+                + data.timestamp + "."
+            ));
             on_hash_change();
         });
 }
@@ -32,7 +40,7 @@ function show_top_100() {
     let div = document.getElementById("content");
     div.innerHTML = "";
 
-    let table = document.getElementById("some_table");
+    let table = document.getElementById("results_table");
     table.innerHTML = "";
     {
         let row = document.createElement("tr");
@@ -67,7 +75,7 @@ function show_player_search() {
     let div = document.getElementById("content");
     div.innerHTML = "";
 
-    let table = document.getElementById("some_table");
+    let table = document.getElementById("results_table");
     table.innerHTML = '';
 
     let input_field = document.createElement("input");
@@ -94,7 +102,7 @@ function show_player_search() {
 }
 
 function update_search_results() {
-    let table = document.getElementById("some_table");
+    let table = document.getElementById("results_table");
     table.innerHTML = '';
     {
         let row = document.createElement("tr");
@@ -130,7 +138,7 @@ function show_player(id) {
         let div = document.getElementById("content");
         div.innerHTML = "";
 
-        let rank_table = document.getElementById("some_table");
+        let rank_table = document.getElementById("results_table");
         rank_table.innerHTML = '';
 
         append_p(div, player.name);

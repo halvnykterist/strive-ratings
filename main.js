@@ -236,7 +236,7 @@ function show_player(id) {
             let [character, history] = player.match_history[i];
             let table = document.createElement("table");
             div.appendChild(table);
-            append_table_header(table, "Character");
+            //append_table_header(table, "Character");
             append_table_header(table, "Date");
             append_table_header(table, "Rating");
             append_table_header(table, "Floor");
@@ -250,7 +250,7 @@ function show_player(id) {
                 let match = history[j];
                 let row = document.createElement("tr");
                 table.appendChild(row);
-                append_table(row, character);
+                //append_table(row, character);
                 append_table(row, match.timestamp);
                 append_table(row, match.own_rating + " ±" + match.own_deviation);
                 append_table(row, match.floor);

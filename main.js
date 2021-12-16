@@ -6,11 +6,11 @@ let data;
 function main() {
     fetch("./data.json")
         .then(response => { 
-            console.log("got json");
             return response.json();
         })
         .then(d => { 
             data = d;
+            data.players = [];
             let header = document.getElementById("header");
             header.appendChild(document.createTextNode("Data from "
                 + data.game_count.toLocaleString("en-US")
@@ -20,6 +20,17 @@ function main() {
                 + data.timestamp + "."
             ));
             on_hash_change();
+
+            for(let i = 0; i < data.player_files; i++) {
+                fetch("./players/" + i + ".json")
+                    .then(response => { 
+                        return response.json();
+                    })
+                    .then(p => { 
+                        data.players = data.players.concat(p);
+                });
+            }
+
         });
 }
 

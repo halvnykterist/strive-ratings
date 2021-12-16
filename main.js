@@ -264,6 +264,8 @@ function show_player(id) {
                 append_table(row, Math.round(match.expected_result * 100) + "%");
                 append_table(row, match.wins + " - " + match.losses);
             }
+
+            div.appendChild(document.createElement("br"));
         }
     }
 }

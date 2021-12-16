@@ -148,8 +148,16 @@ function show_player(id) {
         }
 
         for(let i = 0; i < player.character_ratings.length; i++) {
-            let [character, rating, deviation, set_count] = player.character_ratings[i];
-            append_p(div, character + " - " + rating + " ±" + deviation + " (" + set_count + " sets)");
+            let [character, rating, deviation, set_count, win_rate] = player.character_ratings[i];
+            append_p(div, character
+                + " - "
+                + rating
+                + " ±"
+                + deviation
+                + " (" + set_count + " sets, "
+                + Math.round(win_rate * 100)
+                + "% win rate)"
+            );
         }
 
         for(let i = 0; i < player.match_history.length; i++) {

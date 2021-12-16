@@ -28,9 +28,9 @@ function main() {
                     })
                     .then(p => { 
                         data.players = data.players.concat(p);
+                        on_hash_change();
                 });
             }
-
         });
 }
 

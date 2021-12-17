@@ -154,10 +154,10 @@ function update_search_results() {
         table.appendChild(row);
 
         append_table_header(row, "Name");
-        //append_table_header(row, "Character");
-        //append_table_header(row, "Rating");
-        //append_table_header(row, "Sets played");
-        //append_table_header(row, "Details");
+        append_table_header(row, "Character");
+        append_table_header(row, "Rating");
+        append_table_header(row, "Sets played");
+        append_table_header(row, "Win rate");
     }
 
     if(search_string) {
@@ -166,6 +166,8 @@ function update_search_results() {
         for(let i = 0; i < results.length; i++) {
 
             let player = results[i];
+            let stats = player.character_stats[0];
+            console.log(stats);
             let row = document.createElement("tr");
             table.appendChild(row);
             let name = append_table(row, player.name + " ");
@@ -173,6 +175,11 @@ function update_search_results() {
             link.appendChild(document.createTextNode("→"));
             link.href = "#" + player.id;
             name.appendChild(link);
+
+            append_table(row, stats.character);
+            append_table(row, stats.rating + " ±" + stats.deviation);
+            append_table(row, stats.set_count);
+            append_table(row, Math.round(stats.win_rate * 100) + "%");
         }
     }
 }

@@ -214,7 +214,7 @@ function show_characters() {
             append_table_header(row, "Win rate (adjusted)");
         }
         for(let i = 0; i < data.high_rated_character_stats.length; i++) {
-            let stats = data.global_character_stats[i];
+            let stats = data.high_rated_character_stats[i];
             let row = document.createElement("tr");
             table.appendChild(row);
             append_table(row, stats.character);

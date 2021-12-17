@@ -163,6 +163,19 @@ function update_search_results() {
     if(search_string) {
         search_string = search_string.toLowerCase();
         let results = data.players.filter(p => p.all_names.some(n => n.toLowerCase().includes(search_string)));
+        results.sort((a, b) => {
+            if(
+                a.name.toLowerCase().includes(search_string)
+                && !b.name.toLowerCase().includes(search_string)) {
+                return -1;
+            } else if (
+                !a.name.toLowerCase().includes(search_string) 
+                && b.name.toLowerCase().includes(search_string)) {
+                return 1;
+            } else {
+                return b.character_stats[0].set_count - a.character_stats[0].set_count;
+            }
+        });
         for(let i = 0; i < results.length; i++) {
 
             let player = results[i];

@@ -22,6 +22,7 @@ function main() {
             on_hash_change();
 
             for(let i = 0; i < data.player_files; i++) {
+                let last = i == data.player_files - 1;
                 fetch("./players/" + i + ".json")
                     .then(response => { 
                         return response.json();
@@ -29,6 +30,10 @@ function main() {
                     .then(p => { 
                         data.players = data.players.concat(p);
                         on_hash_change();
+
+                        if(location.hash == "#random" && last) {
+                            show_random_player();
+                        }
                 });
             }
         });
@@ -43,7 +48,7 @@ function on_hash_change() {
     } else if(location.hash === "#player_search") {
         show_player_search();
     } else if(location.hash === "#random") {
-        show_random_player();
+        //show_random_player();
     } else if(location.hash === "#distribution") {
         show_player_distribution();
     } else if(location.hash === "#about") {

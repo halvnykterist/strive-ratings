@@ -245,10 +245,14 @@ function show_top_100_character(id) {
 
     for(let i = 0; i < data.character_top_100.length; i++) {
         let character = data.character_top_100[i][0];
-        let link = document.createElement("a");
-        link.href = "#top_100_" + character;
-        link.appendChild(document.createTextNode(character));
-        div.appendChild(link);
+        if(i == id) {
+            div.appendChild(document.createTextNode(character));
+        } else {
+            let link = document.createElement("a");
+            link.href = "#top_100_" + character;
+            link.appendChild(document.createTextNode(character));
+            div.appendChild(link);
+        }
         if (i != data.character_top_100.length - 1) {
             div.appendChild(document.createTextNode(" | "));
         }

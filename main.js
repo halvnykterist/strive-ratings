@@ -17,7 +17,7 @@ function main() {
                 + " games between "
                 + data.player_count.toLocaleString("en-US")
                 + " players. Data last retrieved "
-                + data.timestamp + " UTC."
+                + data.timestamp + " UTC. Leaderboards require a rating deviation < 100."
             ));
             on_hash_change();
 

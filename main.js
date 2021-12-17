@@ -404,7 +404,12 @@ function show_player(id) {
                     opp_name.appendChild(link);
                     append_table(row, match.opponent_character);
                     append_table(row, match.opponent_rating + " ±" + match.opponent_deviation);
-                    append_table(row, Math.round(match.expected_result * 100) + "%");
+                    append_table(row, 
+                        Math.round(match.expected_result_min * 100)
+                        + "–"
+                        + Math.round(match.expected_result_max * 100)
+                        + "%"
+                    );
                     append_table(row, match.wins + " - " + match.losses);
                 }
 

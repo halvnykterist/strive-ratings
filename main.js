@@ -300,14 +300,16 @@ function show_player_distribution() {
         let row = document.createElement("tr");
         floor_table.appendChild(row);
         append_table_header(row, "Floor");
+        append_table_header(row, "Players");
         append_table_header(row, "Games played");
     }
     for(let i = 0; i < data.games_per_floor.length; i++) {
-        let [label, games] = data.games_per_floor[i];
+        let [label, games, players] = data.games_per_floor[i];
 
         let row = document.createElement("tr");
         floor_table.appendChild(row);
         append_table(row, label);
+        append_table(row, Math.round(players * 1000) / 10 + "%");
         append_table(row, Math.round(games * 1000) / 10 + "%");
     }
 
@@ -319,16 +321,18 @@ function show_player_distribution() {
         let row = document.createElement("tr");
         ratings_table.appendChild(row);
         append_table_header(row, "Rating");
+        append_table_header(row, "Players");
         append_table_header(row, "Games played");
     }
     for(let i = 0; i < data.games_per_rating.length; i++) {
-        let [label, games] = data.games_per_rating[i];
+        let [label, games, players] = data.games_per_rating[i];
         if(games < 0.001) {
             continue;
         }
         let row = document.createElement("tr");
         ratings_table.appendChild(row);
         append_table(row, label);
+        append_table(row, Math.round(players * 1000) / 10 + "%");
         append_table(row, Math.round(games * 1000) / 10 + "%");
     }
 }

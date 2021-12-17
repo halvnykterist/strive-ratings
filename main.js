@@ -235,7 +235,6 @@ function show_characters() {
 }
 
 function show_top_100_character(id) {
-    console.log("Showing data for " + id);
     let div = document.getElementById("content");
     div.innerHTML = "";
     document.getElementById("about").hidden = {};

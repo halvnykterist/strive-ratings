@@ -42,6 +42,8 @@ function on_hash_change() {
         show_top_100();
     } else if(location.hash === "#player_search") {
         show_player_search();
+    } else if(location.hash === "#random") {
+        show_random_player();
     } else if(location.hash === "#distribution") {
         show_player_distribution();
     } else if(location.hash === "#about") {
@@ -49,6 +51,14 @@ function on_hash_change() {
     } else {
         let id = location.hash.replace("#", "");
         show_player(id);
+    }
+}
+
+function show_random_player() {
+    if (data.players.length > 0) {
+        let p = data.players[Math.floor(Math.random() * data.players.length)];
+        location.hash = p.id;
+        show_player(p.id);
     }
 }
 

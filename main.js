@@ -41,10 +41,19 @@ function main() {
 
 //I'm pretty sure this is a "single page application"
 function on_hash_change() {
+    for(let i = 0; i < data.character_top_100.length; i++) {
+        if(location.hash == "#top_100_" + data.character_top_100[i][0]) {
+            show_top_100_character(i);
+            return;
+        }
+    }
+
     if(location.hash === "") {
         show_top_100();
     } else if(location.hash === "#top_100") {
         show_top_100();
+    } else if(location.hash === "#top_100_characters") {
+        show_top_100_character(0);
     } else if(location.hash === "#player_search") {
         show_player_search();
     } else if(location.hash === "#random") {
@@ -73,7 +82,7 @@ function show_top_100() {
     let div = document.getElementById("content");
     div.innerHTML = "";
     document.getElementById("about").hidden = {};
-
+    
     let table = document.getElementById("results_table");
     table.innerHTML = "";
     {
@@ -201,7 +210,7 @@ function show_characters() {
     div.appendChild(document.createElement("br"));
     {
         let h = document.createElement("h4");
-        h.appendChild(document.createTextNode("Players rated ≥1700"));
+        h.appendChild(document.createTextNode("Players rated ≥1800"));
         div.appendChild(h);
         let table = document.createElement("table");
         div.appendChild(table);
@@ -223,6 +232,55 @@ function show_characters() {
             append_table(row, Math.round(stats.win_rate_adjusted * 1000) / 10 + "%");
         }
     }
+}
+
+function show_top_100_character(id) {
+    console.log("Showing data for " + id);
+    let div = document.getElementById("content");
+    div.innerHTML = "";
+    document.getElementById("about").hidden = {};
+    let table = document.getElementById("results_table");
+    table.innerHTML = '';
+
+
+    for(let i = 0; i < data.character_top_100.length; i++) {
+        let character = data.character_top_100[i][0];
+        let link = document.createElement("a");
+        link.href = "#top_100_" + character;
+        link.appendChild(document.createTextNode(character));
+        div.appendChild(link);
+        if (i != data.character_top_100.length - 1) {
+            div.appendChild(document.createTextNode(" | "));
+        }
+    }
+
+    let [character, top_100] = data.character_top_100[id];
+    let h = document.createElement("h2");
+    h.appendChild(document.createTextNode(character));
+    div.appendChild(h);
+
+    {
+        let row = document.createElement("tr");
+        table.appendChild(row);
+        append_table_header(row, "#");
+        append_table_header(row, "Name");
+        append_table_header(row, "Rating");
+        append_table_header(row, "Sets played");
+    }
+    for(let j = 0; j < 100; j++) {
+        let player = top_100[j];
+        let row = document.createElement("tr");
+        table.appendChild(row);
+        append_table(row, j + 1);
+        let name = append_table(row, player.name + " ");
+        let link = document.createElement("a");
+        link.appendChild(document.createTextNode("→"));
+        link.href = "#" + player.id;
+        name.appendChild(link);
+        append_table(row, player.rating + " ±" + player.deviation);
+        append_table(row, player.set_count);
+    }
+    div.appendChild(document.createElement("br"));
 }
 
 function show_player_distribution() {

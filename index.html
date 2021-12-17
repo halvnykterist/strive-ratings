@@ -13,6 +13,7 @@
             <a href="javascript:void();" onclick="show_random_player()">Random player</a> |
             <a href="#top_100">Top 100</a>  |
             <a href="#distribution">Player distribution</a> |
+            <a href="#characters">Characters</a> |
             <a href="#about">About</a>
         </div>
         <div>
@@ -20,9 +21,22 @@
         </div>
         <br>
 
-        <div id="about">
+        <div id="about" hidden>
             <p>This website uses information gathered from Strive's replays on PC to track players and assign them
-            <a href="https://en.wikipedia.org/wiki/Glicko_rating_system">Glicko-2</a> ratings based on their performance. This system is widely used in competitive games and is especially suitable for 1v1 play.
+            <a href="https://en.wikipedia.org/wiki/Glicko_rating_system">Glicko-2</a> ratings based on their performance. This system is widely used in competitive games and is especially suitable for 1v1 play. Matchups are as follows: </p>
+            <table>
+                <tr>
+                    <th>Rating difference</th>
+                    <th>Win probability</th>
+                </tr>
+                <tr><td>0</td><td>50%</td></tr>
+                <tr><td>100</td><td>63%</td></tr>
+                <tr><td>200</td><td>75%</td></tr>
+                <tr><td>300</td><td>85%</td></tr>
+                <tr><td>400</td><td>91%</td></tr>
+                <tr><td>500</td><td>95%</td></tr>
+            </table>
+            <i>If you take on someone 300 points above you in a FT10, you can expect to take about 2 games off of them.</i>
             <p>This has been said many times before, but the tower system that Strive uses is not particularly good. Despite player skill roughly following a normal distribution
              (see <a href="#distribution">here</a>)
              the tower is heavily weighted towards the top end, with one third of games being played in Celestial. Additionally, there appear to be many players who, despite qualifying for celestial, instead hang out in floor 10 (where the middle 30% of the population is) and maintain very high win rates as a result. 

@@ -53,6 +53,8 @@ function on_hash_change() {
         show_player_distribution();
     } else if(location.hash === "#about") {
         show_about();
+    } else if(location.hash === "#characters") {
+        show_characters();
     } else {
         let id = location.hash.replace("#", "");
         show_player(id);
@@ -161,6 +163,64 @@ function update_search_results() {
             link.appendChild(document.createTextNode("→"));
             link.href = "#" + player.id;
             name.appendChild(link);
+        }
+    }
+}
+
+function show_characters() {
+    let div = document.getElementById("content");
+    div.innerHTML = "";
+    document.getElementById("about").hidden = {};
+    let results_table = document.getElementById("results_table");
+    results_table.innerHTML = '';
+
+    {
+        let h = document.createElement("h4");
+        h.appendChild(document.createTextNode("Global"));
+        div.appendChild(h);
+        let table = document.createElement("table");
+        div.appendChild(table);
+        {
+            let row = document.createElement("tr");
+            table.appendChild(row);
+            append_table_header(row, "Character");
+            append_table_header(row, "Popularity");
+            append_table_header(row, "Win rate");
+            append_table_header(row, "Win rate (adjusted)");
+        }
+        for(let i = 0; i < data.global_character_stats.length; i++) {
+            let stats = data.global_character_stats[i];
+            let row = document.createElement("tr");
+            table.appendChild(row);
+            append_table(row, stats.character);
+            append_table(row, Math.round(stats.popularity * 1000) / 10 + "%");
+            append_table(row, Math.round(stats.win_rate * 1000) / 10 + "%");
+            append_table(row, Math.round(stats.win_rate_adjusted * 1000) / 10 + "%");
+        }
+    }
+    div.appendChild(document.createElement("br"));
+    {
+        let h = document.createElement("h4");
+        h.appendChild(document.createTextNode("Players rated ≥1700"));
+        div.appendChild(h);
+        let table = document.createElement("table");
+        div.appendChild(table);
+        {
+            let row = document.createElement("tr");
+            table.appendChild(row);
+            append_table_header(row, "Character");
+            append_table_header(row, "Popularity");
+            append_table_header(row, "Win rate");
+            append_table_header(row, "Win rate (adjusted)");
+        }
+        for(let i = 0; i < data.high_rated_character_stats.length; i++) {
+            let stats = data.global_character_stats[i];
+            let row = document.createElement("tr");
+            table.appendChild(row);
+            append_table(row, stats.character);
+            append_table(row, Math.round(stats.popularity * 1000) / 10 + "%");
+            append_table(row, Math.round(stats.win_rate * 1000) / 10 + "%");
+            append_table(row, Math.round(stats.win_rate_adjusted * 1000) / 10 + "%");
         }
     }
 }

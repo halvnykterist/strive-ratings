@@ -133,6 +133,7 @@ function show_player_search() {
             update_search_results();
         }
     });
+    input_field.focus();
 
     let button = document.createElement("button");
     div.appendChild(button);

@@ -434,7 +434,13 @@ function show_player(id) {
                         + Math.round(match.expected_result_max * 100)
                         + "%"
                     );
-                    append_table(row, match.wins + " - " + match.losses);
+
+                    let results = document.createElement("span");
+                    results.title = Math.round(100 * match.wins / (match.wins + match.losses)) + "%";
+                    results.appendChild(document.createTextNode(match.wins + " - " + match.losses));
+                    let td = document.createElement("td");
+                    td.appendChild(results);
+                    row.appendChild(td);
                 }
 
                 let i = document.createElement("i");

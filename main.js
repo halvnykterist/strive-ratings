@@ -437,6 +437,10 @@ function show_player(id) {
                     append_table(row, match.wins + " - " + match.losses);
                 }
 
+                let i = document.createElement("i");
+                i.appendChild(document.createTextNode("Most games prior to Dec 16th missing."));
+                div.appendChild(i);
+                div.appendChild(document.createElement("br"));
                 div.appendChild(document.createElement("br"));
             }
             {

@@ -497,7 +497,7 @@ function show_player(id) {
 
                     let results = document.createElement("span");
                     results.title = Math.round(100 * match.wins / (match.wins + match.losses)) + "%";
-                    //results.appendChild(document.createTextNode(match.wins + " - " + match.losses));
+                    results.appendChild(document.createTextNode(match.wins + " - " + match.losses));
                     let td = document.createElement("td");
                     td.appendChild(results);
                     row.appendChild(td);

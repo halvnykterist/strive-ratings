@@ -3,6 +3,14 @@
 
 let data;
 
+const characters = [
+    "Sol", "Ky", "May", "Axl", "Chipp", 
+    "Potemkin", "Faust", "Millia", "Zato", 
+    "Ramlethal", "Leo", "Nagoriyuki", "Giovanna", 
+    "Anji", "I-no", "Goldlewis", "Jack-O", 
+    "Happy Chaos"];
+const characters_short = ["SO", "KY", "MA", "AX", "CH", "PO", "FA", "MI", "ZT", "RA", "LE", "NA", "GI", "AN", "IN", "GO", "JA", "HA"];
+
 function main() {
     fetch("./data.json")
         .then(response => { 
@@ -64,6 +72,8 @@ function on_hash_change() {
         show_about();
     } else if(location.hash === "#characters") {
         show_characters();
+    } else if(location.hash === "#matchups") {
+        show_matchups();
     } else {
         let id = location.hash.replace("#", "");
         show_player(id);
@@ -164,13 +174,18 @@ function update_search_results() {
         search_string = search_string.toLowerCase();
         let results = data.players.filter(p => p.all_names.some(n => n.toLowerCase().includes(search_string)));
         results.sort((a, b) => {
-            if(
-                a.name.toLowerCase().includes(search_string)
-                && !b.name.toLowerCase().includes(search_string)) {
+            let score = (n) => {
+                if (n.name == search_string) {
+                    return 10;
+                } else if (n.name.toLowerCase() == search_string.toLowerCase()) {
+                    return 9;
+                } else {
+                    return 0;
+                }
+            };
+            if (score(a) > score(b)) {
                 return -1;
-            } else if (
-                !a.name.toLowerCase().includes(search_string) 
-                && b.name.toLowerCase().includes(search_string)) {
+            } else if (score(a) < score(b)) {
                 return 1;
             } else {
                 return b.character_stats[0].set_count - a.character_stats[0].set_count;
@@ -253,6 +268,51 @@ function show_characters() {
             append_table(row, Math.round(stats.win_rate_adjusted * 1000) / 10 + "%");
         }
     }
+}
+
+
+function show_matchups() {
+    let div = document.getElementById("content");
+    div.innerHTML = "";
+    document.getElementById("about").hidden = {};
+    let results_table = document.getElementById("results_table");
+    results_table.innerHTML = '';
+
+    let show_table = (name, matchups_data)  => {
+        let h = document.createElement("h4");
+        h.appendChild(document.createTextNode(name));
+        div.appendChild(h);
+        let table = document.createElement("table");
+        div.appendChild(table);
+        
+        let row = document.createElement("tr");
+        table.appendChild(row);
+        append_table_header(row, "");
+        for(let i = 0; i < characters.length; i++) {
+            append_table_header(row, characters_short[i]);
+        }
+
+        for(let i = 0; i < characters.length; i++) {
+            let row = document.createElement("tr");
+            table.appendChild(row);
+            append_table_header(row, characters[i]);
+
+            for(let j = 0; j < characters.length; j++) {
+                let [rate, count] = matchups_data[i][j];
+                let td = document.createElement("td");
+                row.appendChild(td);
+                let s = document.createElement("span");
+                td.appendChild(s);
+                s.appendChild(document.createTextNode(Math.round(rate * 100) + "%"));
+                s.title = "Based on " + count + " games"
+            }
+        }
+    };
+
+    show_table("Global", data.matchups_global);
+    show_table("Global (Adjusted)", data.matchups_global_adjusted);
+    show_table(">1800", data.matchups_high_rated);
+    show_table(">1800 (Adjusted)", data.matchups_high_rated_adjusted);
 }
 
 function show_top_100_character(id) {
@@ -437,7 +497,7 @@ function show_player(id) {
 
                     let results = document.createElement("span");
                     results.title = Math.round(100 * match.wins / (match.wins + match.losses)) + "%";
-                    results.appendChild(document.createTextNode(match.wins + " - " + match.losses));
+                    //results.appendChild(document.createTextNode(match.wins + " - " + match.losses));
                     let td = document.createElement("td");
                     td.appendChild(results);
                     row.appendChild(td);

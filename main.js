@@ -304,7 +304,10 @@ function show_matchups() {
                 let s = document.createElement("span");
                 td.appendChild(s);
                 s.appendChild(document.createTextNode(Math.round(rate * 100) + "%"));
-                s.title = "Based on " + count + " games"
+                td.title = characters[i] + " vs " + characters[j] + ". Based on " + count + " sets."
+                if(count < 30) {
+                    s.className = "uncertain";
+                }
             }
         }
     };
@@ -455,7 +458,7 @@ function show_player(id) {
                         + stats.rating
                         + " ±"
                         + stats.deviation
-                        + " (" + stats.set_count + " sets, "
+                        + " (" + stats.set_count + " games, "
                         + Math.round(stats.win_rate * 100)
                         + "% win rate)"
                 ));

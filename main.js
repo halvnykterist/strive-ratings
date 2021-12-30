@@ -405,10 +405,11 @@ function show_player_distribution() {
         ratings_table.appendChild(row);
         append_table_header(row, "Rating");
         append_table_header(row, "Players");
+        append_table_header(row, "Percentile");
         append_table_header(row, "Games played");
     }
     for(let i = 0; i < data.games_per_rating.length; i++) {
-        let [label, games, players] = data.games_per_rating[i];
+        let [label, games, players, players_cum] = data.games_per_rating[i];
         if(games < 0.001) {
             continue;
         }
@@ -416,6 +417,7 @@ function show_player_distribution() {
         ratings_table.appendChild(row);
         append_table(row, label);
         append_table(row, Math.round(players * 1000) / 10 + "%");
+        append_table(row, Math.round(players_cum * 1000) / 10 + "%");
         append_table(row, Math.round(games * 1000) / 10 + "%");
     }
 }
